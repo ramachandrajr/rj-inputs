@@ -4,16 +4,16 @@
 	<title>Test Template</title>
 </head>
 <body>
-	<div id="msg">Hi there Rj!</div>
+	<div id="msg">Hi there!</div>
 	<br>
 	<br>
-	<input type="text" value="Ramachandra" id="fName">
+	Name of the greatest programmer ever in this universe: <input type="text" value="" id="fName">
 	<button onclick="validate();">Click here!</button>
-	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript" src="rj-inputs.js"></script>
 	<script type="text/javascript">
 		var msg = document.getElementById("msg");
 		function validate() {
-			$input("fName").isValid("ajay", function(args) {
+			$input("fName").isValid("Rj", function(args) {
 				msg.style.background = args[0];
 				msg.textContent = args[1];
 			}, ["red", "Wrong name"]);
