@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Template</title>
+</head>
+<body>
+	<div id="msg">Hi there Rj!</div>
+	<br>
+	<br>
+	<input type="text" value="Ramachandra" id="fName">
+	<button onclick="validate();">Click here!</button>
+	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript">
+		var msg = document.getElementById("msg");
+		function validate() {
+			$input("fName").isValid("ajay", function(args) {
+				msg.style.background = args[0];
+				msg.textContent = args[1];
+			}, ["red", "Wrong name"]);
+		}
+	</script>
+</body>
+</html>
