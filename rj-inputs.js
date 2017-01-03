@@ -38,41 +38,63 @@
 var Input = function(element, text) {
 	this.element = element;
 	this.text = text;
-	this.isValid = function(regex, cb, cbArgs) {
-		// Checking input data.
-		try {
-			if ( !(Array.isArray(regex) && regex.length === 2) && typeof regex !== "string" )
-				throw new Error("The First Argument has to be an array of length 2 or a regex compatible string!");
-			else if ( typeof regex[0] !== "string" || typeof regex[1] !== "string" )
-				throw new Error("Elements of the Regex array must be strings!");
-			else if ( !(cb === undefined || typeof cb === "function") )
-				throw new Error("The Second Argument has to be a callback function!");
-			else if ( !(cbArgs === undefined || Array.isArray(cbArgs) || typeof cbArgs === "string") ) 
-				throw new Error("The third Argument has to be an Array or a String of callback Argument/s!")
-		} catch (exception) {
-			console.error(exception);
-			return null;
-		}
-
-		// Setting regex arguments
-		if (Array.isArray(regex)) {
-			var regArg1 = regex[0],
-				regArg2 = regex[1];
-		} else {
-			var regArg1 = regex,
-				regArg2 = "g";
-		}
-
-		// If pattern is regexp usable.
-		var pattern = new RegExp(regArg1, regArg2);
-		if (this.text.match(pattern) === null) {
-			cb(cbArgs);
-			return false;
-		}
-
-		return this.element;
-	};
 };
+
+Input.prototype.isValid = function(regex, cb, cbArgs) {
+	// Checking input data.
+	try {
+		if ( !(Array.isArray(regex) && regex.length === 2) && typeof regex !== "string" )
+			throw new Error("The First Argument has to be an array of length 2 or a regex compatible string!");
+		else if ( typeof regex[0] !== "string" || typeof regex[1] !== "string" )
+			throw new Error("Elements of the Regex array must be strings!");
+		else if ( !(cb === undefined || typeof cb === "function") )
+			throw new Error("The Second Argument has to be a callback function!");
+		else if ( !(cbArgs === undefined || Array.isArray(cbArgs) || typeof cbArgs === "string") ) 
+			throw new Error("The third Argument has to be an Array or a String of callback Argument/s!")
+	} catch (exception) {
+		console.error(exception);
+		return null;
+	}
+
+	// Setting regex arguments
+	if (Array.isArray(regex)) {
+		var regArg1 = regex[0],
+			regArg2 = regex[1];
+	} else {
+		var regArg1 = regex,
+			regArg2 = "g";
+	}
+
+	// If pattern is regexp usable.
+	var pattern = new RegExp(regArg1, regArg2);
+	if (this.text.match(pattern) === null) {
+		cb(cbArgs);
+		return false;
+	}
+
+	return this.element;
+};
+
+
+/*
+ * InputList class.
+ */
+
+var InputList = function(nodeList) {
+	this.elements = nodeList;
+	this.values = null;
+};
+
+InputList.prototype.getValues = function() {
+	this.values = [];
+	for (let i = 0; i < this.elements.length; i++) {
+		this.values.push(this.elements[i].value);
+	}
+	return this.values;
+};
+
+InputList.prototype.isValid = function()
+
 
 
 /*
@@ -86,19 +108,40 @@ var Input = function(element, text) {
 
 window.$input = function(window, document, id) {
 
-	// If no 'id' given as argument!
-	if (id === undefined) throw new Error("$input() function needs an 'id' string as argument!");
-	var element = document.getElementById(id);
+	// No 'id' given.
+	if (id === undefined) {
+		throw new Error("$input() function needs an 'id' string as argument!");
+	}
+	// 'id' is a String.
+	else if (typeof id === "string") {
+	 	var node = document.getElementById(id);
+	}
+	// 'id' is an Array.
+	else if (Array.isArray(id) === true) {
+		var ids = id,
+			id = null,
+			nodeList = [];
+		ids.forEach(function(id) {
+			nodeList.push(document.getElementById(id));
+		});
+	}
 
 	try {
-		// If you can not find the element in the DOM.
-		if (element === null) throw new Error("An element with the following 'id' does not exist!");
-		// If all goes well.
-		return new Input(element, element.value);
+		// Can't find node in DOM.
+		if (node === null) {
+			throw new Error("A node with the following 'id' does not exist!");
+		} 
+		// If the input was a list.
+		else if (node === undefined) {
+			return new InputList(nodeList);
+		} else { 
+			return new Input(node, node.value);
+		}
+
 	} catch (exception) {
 		console.error(exception);
 		return null;
 	}
 
-}.bind(this, window, document);
+}.bind(null, window, document);
 

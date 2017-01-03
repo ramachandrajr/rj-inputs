@@ -7,17 +7,16 @@
 	<div id="msg">Hi there!</div>
 	<br>
 	<br>
-	Name of the greatest programmer ever in this universe: <input type="text" value="" id="fName">
+	Name of the greatest programmer ever in this universe: <input type="text" value="ajay" id="fName">
+	and his last name: <input type="text" value="kumar" id="lName">
 	<button onclick="validate();">Click here!</button>
-	<script type="text/javascript" src="rj-inputs.js"></script>
+	<script type="text/javascript" src="rj-inputs-list.js"></script>
 	<script type="text/javascript">
-		var msg = document.getElementById("msg");
-		function validate() {
-			$input("fName").isValid("Rj", function(args) {
-				msg.style.background = args[0];
-				msg.textContent = args[1];
-			}, ["red", "Wrong name"]);
-		}
+		console.log($input("input").isValid(["\\w+", "\\w+"], function(args) {
+			console.log()
+		}, ["hi", "There"]).each(function(e) {
+			console.log(e.value);
+		}));
 	</script>
 </body>
 </html>
