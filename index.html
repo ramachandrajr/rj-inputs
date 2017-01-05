@@ -12,11 +12,15 @@
 	<button onclick="validate();">Click here!</button>
 	<script type="text/javascript" src="rj-inputs-list.js"></script>
 	<script type="text/javascript">
-		console.log($input("input").isValid(["\\w+", "\\w+"], function(args) {
-			console.log()
-		}, ["hi", "There"]).each(function(e) {
-			console.log(e.value);
-		}));
+
+	var validate = function() {
+		$input();
+	};
+
+	(function() {
+		$input();
+	}());
+
 	</script>
 </body>
 </html>
